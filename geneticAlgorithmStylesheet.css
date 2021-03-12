@@ -1,0 +1,302 @@
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color:#072e74;
+}
+
+::-webkit-scrollbar {
+    width: 3.5px; 
+    background: transparent;  
+}
+::-webkit-scrollbar-thumb {
+    background:#A8A8A8;
+    opacity:0.7;
+}
+
+div{
+    padding:10px;
+    border:2px solid black;
+    margin:5px;
+    border-radius:5px;
+    background-color: #fff8d8;
+}
+
+.mainPanel{
+    background-color:#fff;
+    border:0px solid black;
+    border-radius:20px;
+    display:grid;
+    background-color:#6db9d5;
+}
+
+button{
+	box-shadow: 3px 4px 4px 0px #9fb4f2;
+	background:linear-gradient(to bottom, palegoldenrod 5%, #e3ded9 100%);
+	border-radius:2px;
+	border:1px solid #4e6096;
+	display:inline-block;
+	cursor:pointer;
+	color:black;
+	font-size:16px;
+	padding:5px;
+	text-decoration:none;
+    text-shadow:0px 0px 2px white;
+    height:40px;
+    width:10vw;
+    position: relative;
+    margin:0px;
+    white-space: nowrap;
+}
+button:hover {
+	background:linear-gradient(to bottom, #476e9e 5%, #7892c2 100%);
+    background-color:#476e9e;
+    color:white;
+}
+button:active {
+    position:relative;
+    background-color:#476e9e;
+	top:3px;
+}
+button:disabled {
+    opacity: 0.5;
+}
+#resetButton{
+    box-shadow: 3px 4px 4px 0px #9fb4f2;
+	background:linear-gradient(to bottom, palegoldenrod 5%, #e3ded9 100%);
+}
+#resetButton:hover {
+	background:linear-gradient(to bottom, darkred 5%, red 100%);
+    color:white;
+}
+
+#output{
+    display:block;
+}
+table { 
+    border-collapse: collapse; 
+    width:100%;
+}
+tr{
+    border:2px solid black;
+}
+td,th{
+    text-align: center;
+    border:2px solid black;
+    padding:10px;
+    width:20%;
+    line-height:1.5;
+}
+#genCounterDiv, #bestNewOrganismDiv, #blackSheepDiv {
+    border:none;
+    margin:auto;
+}
+#tableTitle{
+    font-size:20px;
+    padding:0px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-bottom:3px solid black;
+    background-color:#8aa4ab;
+}
+.resultsTable{
+    background-color:#dae4eb;
+    font-family: "Lucida Console", Monaco, monospace;
+    transition: all 1s ease-in;
+}
+.resultsTableHeadings{
+    background-color:#e3ded9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#validationExplanation{
+    font-size:13px;
+    color:darkblue;
+}
+
+.settingDiv{
+    border:1px solid black;
+    background-color: palegoldenrod;
+}
+.settingA {grid-area: a;}
+.settingB {grid-area: b;}
+.settingC {grid-area: c;}
+.settingD {grid-area: d;}
+.settingE {grid-area: e;}
+.settingF {grid-area: f;}
+.settingsPanel {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: auto auto auto;
+    grid-template-areas: 
+      "a b"
+      "c d"
+      "e f";
+}
+
+.buttonDiv{
+    border:none;
+    align-self: center;
+    justify-self: center;
+}
+.buttonU {grid-area: u;}
+.buttonV {grid-area: v;}
+.buttonW {grid-area: w;}
+.buttonX {grid-area: x;}
+.buttonY {grid-area: y;}
+.buttongZ {grid-area: z;}
+.buttonPanel {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: auto auto auto;
+    grid-template-areas: 
+      "u v"
+      "w x"
+      "y z";
+}
+
+.titlePanel {
+    grid-area: title;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-bottom:3px solid black;
+    padding:5px;
+}
+.informationPanel{
+    grid-area: info;
+}
+.settingsPanel {
+    grid-area: settings;
+}
+.statisticsPanel {
+    grid-area: stats;
+    font-family: "Lucida Console", Monaco, monospace;
+    font-size:100%;
+}
+.buttonPanel {
+    grid-area: buttons;
+}
+.controlsPanel {
+    grid-area: controls;
+    font-size:1vw;
+}
+.tablePanel {
+    grid-area: table;
+}
+.graphPanel {
+    grid-area: graph;
+}
+.mainPanel {
+    max-width:100%;
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas:    
+      "title title title title"
+      "info info info info"
+      "settings settings settings settings"
+      "stats stats buttons controls"
+      "table table graph graph";
+}
+
+#lineGraph{
+    display:none;
+}
+
+
+#volumeControl:hover, #logGraphCheckboxInput:hover, #blackSheepInput:hover {
+    cursor: pointer;
+}
+#volumeControl{
+    position: relative;
+    top: 6px;
+    left:12px;
+    width: 50% !important;
+}
+#volumeIcon{
+    position: relative;
+    top: 5px;
+    left: 16px;
+    width: 20px; 
+    height: 20px; 
+}
+.helpBubble:hover{
+    cursor: help;
+}
+.collapseInformationButton {
+    width: 100%;
+    outline: none;
+}
+.informationDiv {
+    padding: 0 18px;
+    height:0;
+    overflow: scroll;
+    transition: all 0.25s ease-in;
+    background-color:transparent;
+    border:2px solid black;
+    border-top:none;
+    margin-top:-2px;
+    background-color:whitesmoke;
+}
+.informationDiv > p,.informationDiv > h3{
+    text-align:justify;
+}
+.informationContent{
+    all:unset;
+}
+.informationContent > h3{
+    margin-top:25px;
+    margin-bottom:5px;
+}
+a{
+    text-decoration: none;
+    color:blue;
+}
+li{
+    padding:6px;
+}
+
+
+/* for medium screens */
+@media (max-width: 1100px) {
+    .mainPanel {
+        max-width:100%;
+        display: grid;
+        grid-template-columns: 50% 50%;
+        grid-template-rows: auto;
+        grid-template-areas:    
+          "title title"
+          "info info"
+          "settings settings"
+          "stats stats"
+          "buttons controls"
+          "graph graph"
+          "table table";
+    }
+    button{
+        width:15vw;
+    }
+  }
+
+/* for smaller screens (like phones) */
+@media only screen and (max-width: 650px) {
+    .mainPanel {
+        max-width:100%;
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: auto;
+        grid-template-areas:    
+          "title"
+          "info"
+          "settings"
+          "stats"
+          "buttons" 
+          "controls"
+          "graph"
+          "table";
+    }
+    button{
+        width:25vw;
+    }
+}

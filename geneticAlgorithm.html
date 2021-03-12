@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="geneticAlgorithmStylesheet.css">
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script> <!--importing chart.js library-->
+	</head>
+	
+	<body onload="inputDateOnLoad()">
+	<div class="mainPanel">
+		<div class="titlePanel">
+			<h2 style="text-align:center;">GENETIC ALGORITHM</h2>
+		</div>
+		<div class="informationPanel">
+			<button class="collapseInformationButton" onclick="toggleInformation(this)">Information</button>
+			<div class="informationDiv">
+				<div class="informationContent">
+					<h3>6 Step Summary</h3>
+					<p>
+						<ol>
+							<li>The user offers a string as a target and activates one of the buttons to move forward in time.</li>
+							<li>For the very first generation, the algorithm randomly generates an array of nonsense strings. Each of these strings is saved as the name property of a new 'organism' object.</li>
+							<li>The fitness of each organism is evaluated, where fitness is the measure of how close each organism is to the target.</li>
+							<li>After being sorted by fitness, all organisms are paired into couples and mated.
+								<ul>	
+									<li>Each couple has many offspring, but the exact number is determined by the user.</li>
+									<li>Each offspring inherits a random combination of DNA from each parent organism.</li>
+									<li>Offspring have a chance to randomly mutate, changing their DNA slightly.</li>
+								</ul>
+							</li>
+							<li>Only the fittest organisms survive each generation! Such is the cruel nature of life.</li>
+							<li>Repeat until the organisms' evolution converges to the target.</li>
+						</ol>
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="settingsPanel">
+			<div class="settingDiv settingA">Set target string:
+				<input type=text id="targetOrganismInput" minlength="3" maxlength="21" value="Hello World" required onfocusout="validateInputString()"></input>
+				<span id="validationExplanation"></span>
+			</div>
+			<div class="settingDiv settingB">Set initial population size:
+				<input type=number id="initialOrganismPopulationSizeInput" min="2" value="4"></input>
+			</div>
+			<div class="settingDiv settingC">How many organisms survive each year:
+				<input type=number id="survivingPopulationSizeInput" min="2" step="2" value="4" onchange="((this.value > 100) ? this.value=100:((this.value % 2 == 1) ? this.value++:this.value));"></input>
+			</div>
+			<div class="settingDiv settingD">Enable black sheep spawn? <br />(one offspring per generation is completely mutated)
+				<input type="checkbox" id="blackSheepInput" unchecked onchange="toggleBlackSheep()"></input>
+			</div>
+			<div class="settingDiv settingE">Max number of random mutations per offspring:
+				<input type=number id="mutationInput" max="6" min="0" value="1" onkeydown="return false"></input>
+			</div>
+			<div class="settingDiv settingF">Fertility (how many offspring per couple): 
+				<input type=number id="fertilityInput" max="10000" min="2" value="100"></input>
+			</div>
+		</div>
+		<div class="statisticsPanel">
+			<div id="genCounterDiv">Current generation: <span id="generationCounter"></span></div>
+			<div id="bestNewOrganismDiv">Best new organism: <span id="bestNewOrganism"></span></div>
+			<div id="blackSheepDiv" style="display: none;">Black sheep: <span id="blackSheep"></span></div>
+			<div id="bestNewOrganismDiv">Current Mean Fitness: <span id="meanFitness"></span></div>
+		</div>
+		<div class="buttonPanel">
+				<div class="buttonDiv buttonU"><button onclick="go(1)" class="button">+1 Year</button></div>
+				<div class="buttonDiv buttonV"><button onclick="go(Infinity)" class="button">+Infinity!</button></div>
+				<div class="buttonDiv buttonW"><button onclick="go(10)" class="button">+10 Years</button></div>
+				<div class="buttonDiv buttonX"><button onclick="haltProgram();" id="stopButton">STOP</button></div>
+				<div class="buttonDiv buttonY"><button onclick="go(100)" class="button">+100 Years</button></div>
+				<div class="buttonDiv buttonZ"><button onclick="resetProgram();" id="resetButton">RESET ALL</button></div>
+		</div>
+		<div class="controlsPanel">
+			<h3>Controls</h3>
+			<div class="controlDiv">Volume:<input id="volumeControl" type="range" min="0" max="100" step="1" value="25" oninput="adjustVolume(this.value)" onchange="adjustVolume(this.value)"></input> <img src="image/Quiet.svg" id="volumeIcon"></img></div>
+			<div class="controlDiv">Logarithmic line chart x-axis scale: <input type="checkbox" id="logGraphCheckboxInput" unchecked onchange="toggleLogScale()"></input></div>		
+		</div>
+		<div class="tablePanel">
+			<table id="resultsTable" class="resultsTable">
+				<tr class="resultsTable">
+					<th colspan=4 id="tableTitle" class="resultsTable">SIGNIFICANT EVOLUTION MILESTONES:</th>
+				</tr>
+				<tr class="resultsTable">
+					<th class="resultsTable resultsTableHeadings">Generation</th><th class="resultsTable resultsTableHeadings">Fittest Organism</th><th class="resultsTable resultsTableHeadings">Peak Fitness</th><th class="resultsTable resultsTableHeadings">Mean Fitness</th>
+				</tr>
+			</table>
+		</div>
+		<div class="graphPanel">
+			<canvas id="lineGraph" height="210" style="border:1px solid black;"></canvas>
+		</div>
+	</div>
+
+
+	<!-- using chart.js library to represent our data graphically. -->
+	<script>
+		const ctx = document.getElementById("lineGraph").getContext('2d');
+		ctx.height = 750;	
+		const lineChart = new Chart(ctx, {
+
+			type: 'line',
+
+			data: {
+				datasets: [{
+					label: 'Mean Fitness',
+					backgroundColor: 'rgba(55,255,255,0.4)',
+					borderColor: 'blue',
+				},{
+					label: 'Peak Fitness',
+					backgroundColor: 'rgba(250, 152, 245,0.4)',
+					borderColor: 'purple',
+					borderJoinStyle:'round',
+					pointBorderWidth:2,
+					pointRadius:2,
+					pointHoverRadius:4,
+					spanGaps:true,
+					steppedLine: true,
+				}],
+			},
+
+			options: {
+				scales: {
+					xAxes: [{
+						type: 'linear',
+						scaleLabel: {
+							display: true,
+							labelString: 'Generation'
+						},
+						ticks: {
+							beginAtZero: true,
+							maxTicksLimit: 5,
+							max:1,
+						}
+					}],
+					yAxes: [{
+						type: 'linear',
+						scaleLabel: {
+							display: true,
+							labelString: 'Fitness'
+						},
+						ticks: {
+							beginAtZero: true,
+						}
+					}]
+				},
+				title: {
+					display: true,
+					text: 'Live Fitness Over Time Graph using Chart.js'
+				},
+				tooltips: {
+					mode: 'label',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: false,
+				}
+			}
+		});
+	
+	function toggleLogScale(){
+		var logScaleEnabled = document.getElementById('logGraphCheckboxInput').checked;
+		if(logScaleEnabled){
+			lineChart.options.scales.xAxes[0].type='logarithmic'; 
+			lineChart.update();
+		}else{
+			lineChart.options.scales.xAxes[0].type='linear'; 
+			lineChart.update();
+		}
+	}
+	</script>
+
+	<script src="geneticScript.js"></script>
+	<script src="chimetones.js"></script>
+	</body>
+</html>
